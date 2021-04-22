@@ -227,10 +227,9 @@ var map_container = new Vue({
 map.on('load', function() {
 console.log(stores);
  stores.forEach(function(store, i) {
-   if (store.business.storedeals.length > 0) {
-   console.log(store.business.storedeals[0].dlsApplyTo);
- }
-   new mapboxgl.Marker()
+   var el = document.createElement('div');
+   el.className = 'marker';
+   new mapboxgl.Marker(el)
    .setLngLat([store.business.storeLongitude,store.business.storeLatitude])
    .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
     .setHTML(
