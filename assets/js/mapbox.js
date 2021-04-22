@@ -164,7 +164,7 @@ Vue.component('map-brands-filter', {
                 </div>\
                 <div class="dropdown-container p-4 dropdown-menu">\
                   <div class="search-content">\
-                      <a v-for="value in filteredList" class="cities" v-on:click="filterOnMap(value.storeLatitude, value.storeLongitude)">\
+                      <a v-for="value in filteredList" class="cities" v-on:click="filterOnMap(value.business.storeLatitude, value.business.storeLongitude)">\
                         <p>{{value.business.storeName}}</p>\
                       </a>\
                     <br>\
