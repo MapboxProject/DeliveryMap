@@ -77,23 +77,6 @@ function buildDealList(data) {
 }
 
 var stores = data;
-var map_container = new Vue({
-  el: '#vue-filter',
-  data: {
-    stores: stores
-  },
-  template: '<div class="order-2 text-center w-100 row mx-0" style="height: 5em">\
-              <div class="order-1 order-lg-2 col-12 col-lg-7 mt-2 mt-lg-0 px-0">\
-                <map-brands-filter :atts="atts"/>\
-              </div>\
-              <div class="order-2 order-lg-1 mt-3 mt-lg-0 px-0 col-lg-4">\
-                <map-location-filter :atts="atts"/>\
-              </div>\
-            </div>',
-  created: function() {
-    this.atts = stores;
-  }
-})
 
 Vue.component('map-location-filter', {
   template: '<div class="dropdown">\
@@ -177,12 +160,12 @@ Vue.component('map-location-filter', {
 Vue.component('map-brands-filter', {
   template: '<div class="order-1 order-lg-2 col-12 col-lg-7 mt-2 mt-lg-0 px-0">\
                 <div data-toggle="dropdown">\
-                  <input type="text" v-model="searchBrand" @keyup="displayLog" class="form-control bg-light" placeholder="Search Brands, Products, Services and more."/>\
+                  <input type="text" v-model="searchBrand" class="form-control bg-light" placeholder="Search Brands, Products, Services and more."/>\
                 </div>\
                 <div class="dropdown-container p-4 dropdown-menu">\
                   <div class="search-content">\
-                      <a v-for="value in filteredList" class="cities">\
-                        <p>{{value}}</p>\
+                      <a v-for="value in filteredList" class="cities" v-on:click="filterOnMap(value.storeLatitude, value.storeLongitude)">\
+                        <p>{{value.business.storeName}}</p>\
                       </a>\
                     <br>\
                   </div>\
@@ -198,46 +181,43 @@ Vue.component('map-brands-filter', {
     this.result = stores;
   },
   methods: {
-    matches(obj) {
-      const searchTerm = this.searchBrand.toLowerCase();
-      return obj.business.storeName.toLowerCase.includes(searchTerm);
-    },
-    displayLog() {
-      var todasLojas= [];
-      this.result.forEach(function(store, i) {
-        todasLojas.push(store.business.storeName);
-      })
-      console.log("Teste");
-      console.log(todasLojas);
-      console.log(Object.values(this.result[0].business.storeName));
+    filterOnMap(lat, long) {
+      map.flyTo({
+        center: [long, lat],
+        essential: true
+  });
     }
 
   },
   computed: {
-    listValues() {
-      var todasLojas= [];
-      this.result.forEach(function(store, i) {
-        todasLojas.push(store.business.storeName);
-      })
-      return todasLojas;
-    },
-    filteredList() {
-      if (!this.searchQuery) {
-        return this.listValues;
-      }
-
-      return this.listValues
-      .map((v) => {
-        if (this.matches(v)) {
-          return v;
-        }
-      })
-      .filter((v) => v);
+    filteredList: function() {
+      var self = this;
+      return this.result.filter(function (value) {
+        return value.business.storeName.toLowerCase().indexOf(self.searchBrand.toLowerCase()) >= 0
+        || value.business.storeplType.toLowerCase().indexOf(self.searchBrand.toLowerCase()) >= 0;
+      });
     }
 
   },
 });
-new Vue({ el: '#vue-filter' })
+
+var map_container = new Vue({
+  el: '#vue-filter',
+  data: {
+    stores: stores
+  },
+  template: '<div class="order-2 text-center w-100 row mx-0" style="height: 5em">\
+              <div class="order-1 order-lg-2 col-12 col-lg-7 mt-2 mt-lg-0 px-0">\
+                <map-brands-filter :atts="atts"/>\
+              </div>\
+              <div class="order-2 order-lg-1 mt-3 mt-lg-0 px-0 col-lg-4">\
+                <map-location-filter :atts="atts"/>\
+              </div>\
+            </div>',
+  created: function() {
+    this.atts = stores;
+  }
+})
 
 
 map.on('load', function() {
