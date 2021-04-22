@@ -35,7 +35,7 @@ function buildDealList(data) {
       && store.business.storedeals[0].media) {
       //Create anchor to see deal
       var link = listing.appendChild(document.createElement('a'));
-      link.href = store.storebizRoute;
+      link.href = '';
       link.style = "color: black";
       // Create div with deal content
       var dealColumn = link.appendChild(document.createElement('div'));
@@ -82,15 +82,20 @@ var map_container = new Vue({
   data: {
     stores: stores
   },
-  template: '<div class="container-lg text-center" style="height: 5em">\
-            <map-filter :atts="atts"/>\
+  template: '<div class="order-2 text-center w-100 row mx-0" style="height: 5em">\
+              <div class="order-1 order-lg-2 col-12 col-lg-7 mt-2 mt-lg-0 px-0">\
+                <map-brands-filter :atts="atts"/>\
+              </div>\
+              <div class="order-2 order-lg-1 mt-3 mt-lg-0 px-0 col-lg-4">\
+                <map-location-filter :atts="atts"/>\
+              </div>\
             </div>',
   created: function() {
     this.atts = stores;
   }
 })
 
-Vue.component('map-filter', {
+Vue.component('map-location-filter', {
   template: '<div class="dropdown">\
               <button type="button" class="btn dropdown-toggle rounded-pill bg-white" id="cityFilterToggle" data-toggle="dropdown">\
                 <i class="las la-map-marker"></i>\
@@ -112,7 +117,7 @@ Vue.component('map-filter', {
                 <section>\
                   <div class="">\
                     <nav class="popular">\
-                      <input value="Popular Areas" type="button" class="popular" v-on:click="debugTest">\
+                      <input value="Popular Areas" type="button" class="popular">\
                       <input value="A-Z" type="button" class="alphabetical">\
                       <input value="Near By" type="button" class="nearBy pt-3 pt-lg1 pt-md1">\
                     </nav>\
@@ -149,9 +154,6 @@ Vue.component('map-filter', {
     }
   },
   methods: {
-    debugTest: function (event) {
-      console.log(this.result);
-    },
     inputChanged(event) {
       if (event.code == "ArrowUp" || event.code == "ArrowDown")
         return;
@@ -170,6 +172,70 @@ Vue.component('map-filter', {
     }
 
     }
+});
+
+Vue.component('map-brands-filter', {
+  template: '<div class="order-1 order-lg-2 col-12 col-lg-7 mt-2 mt-lg-0 px-0">\
+                <div data-toggle="dropdown">\
+                  <input type="text" v-model="searchBrand" @keyup="displayLog" class="form-control bg-light" placeholder="Search Brands, Products, Services and more."/>\
+                </div>\
+                <div class="dropdown-container p-4 dropdown-menu">\
+                  <div class="search-content">\
+                      <a v-for="value in filteredList" class="cities">\
+                        <p>{{value}}</p>\
+                      </a>\
+                    <br>\
+                  </div>\
+              </div>\
+            </div>',
+  data: function () {
+    return {
+      result: [],
+      searchBrand: ''
+    }
+  },
+  created: function() {
+    this.result = stores;
+  },
+  methods: {
+    matches(obj) {
+      const searchTerm = this.searchBrand.toLowerCase();
+      return obj.business.storeName.toLowerCase.includes(searchTerm);
+    },
+    displayLog() {
+      var todasLojas= [];
+      this.result.forEach(function(store, i) {
+        todasLojas.push(store.business.storeName);
+      })
+      console.log("Teste");
+      console.log(todasLojas);
+      console.log(Object.values(this.result[0].business.storeName));
+    }
+
+  },
+  computed: {
+    listValues() {
+      var todasLojas= [];
+      this.result.forEach(function(store, i) {
+        todasLojas.push(store.business.storeName);
+      })
+      return todasLojas;
+    },
+    filteredList() {
+      if (!this.searchQuery) {
+        return this.listValues;
+      }
+
+      return this.listValues
+      .map((v) => {
+        if (this.matches(v)) {
+          return v;
+        }
+      })
+      .filter((v) => v);
+    }
+
+  },
 });
 new Vue({ el: '#vue-filter' })
 
