@@ -193,8 +193,12 @@ Vue.component('map-brands-filter', {
     filteredList: function() {
       var self = this;
       return this.result.filter(function (value) {
-        return value.business.storeName.toLowerCase().indexOf(self.searchBrand.toLowerCase()) >= 0
-        || value.business.storeplType.toLowerCase().indexOf(self.searchBrand.toLowerCase()) >= 0;
+        if (value.business.storedeals.length > 0) {
+          return value.business.storeName.toLowerCase().indexOf(self.searchBrand.toLowerCase()) >= 0
+          || value.business.storeplType.toLowerCase().indexOf(self.searchBrand.toLowerCase()) >= 0
+          || value.business.storedeals[0].dlsName.toLowerCase().indexOf(self.searchBrand.toLowerCase()) >= 0
+          || value.business.storedeals[0].dlsApplyTo.toLowerCase().indexOf(self.searchBrand.toLowerCase()) >= 0;
+        }
       });
     }
 
@@ -223,6 +227,9 @@ var map_container = new Vue({
 map.on('load', function() {
 console.log(stores);
  stores.forEach(function(store, i) {
+   if (store.business.storedeals.length > 0) {
+   console.log(store.business.storedeals[0].dlsApplyTo);
+ }
    new mapboxgl.Marker()
    .setLngLat([store.business.storeLongitude,store.business.storeLatitude])
    .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
