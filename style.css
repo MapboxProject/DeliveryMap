@@ -85,6 +85,12 @@
     background-color: #fff;
     border: 1px solid rgba(0,0,0,.15);
     border-radius: 1rem;
+    /* max-height: 5em; */
+    overflow-y: auto;
+}
+
+.search-content {
+    max-height: 10em;
 }
 
 nav.popular {
