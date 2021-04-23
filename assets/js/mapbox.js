@@ -167,8 +167,6 @@ Vue.component('map-brands-filter', {
                       <a v-for="value in filteredList" class="cities" v-on:click="filterOnMap(value.business.storeLatitude, value.business.storeLongitude)">\
                         <p>{{value.business.storeName}}</p>\
                       </a>\
-                    <br>\
-                  </div>\
               </div>\
             </div>',
   data: function () {
@@ -186,23 +184,40 @@ Vue.component('map-brands-filter', {
         center: [long, lat],
         essential: true
   });
-    }
+}
 
   },
   computed: {
     filteredList: function() {
       var self = this;
-      return this.result.filter(function (value) {
-        if (value.business.storedeals.length > 0) {
-          return value.business.storeName.toLowerCase().indexOf(self.searchBrand.toLowerCase()) >= 0
-          || value.business.storeplType.toLowerCase().indexOf(self.searchBrand.toLowerCase()) >= 0
-          || value.business.storedeals[0].dlsName.toLowerCase().indexOf(self.searchBrand.toLowerCase()) >= 0
-          || value.business.storedeals[0].dlsApplyTo.toLowerCase().indexOf(self.searchBrand.toLowerCase()) >= 0;
-        }
-      });
+      var isSearchStore = this.result.some(el => el.business.storeName.includes(self.searchBrand));
+      var isSearchService = this.result.some((el) => el.business.storeplType.includes(self.searchBrand));
+      var isSearchDeal = this.result.some((el) => el.business.storedeals[0].dlsName.includes(self.searchBrand));
+      var isSearchProd = this.result.some((el) => el.business.storedeals[0].dlsApplyTo.includes(self.searchBrand));
+      switch (true) {
+        case isSearchStore:
+          return this.result.filter(function (value) {
+            return value.business.storeName.toLowerCase().includes(self.searchBrand.toLowerCase())
+          })
+          break;
+        case isSearchService:
+        return this.result.filter(function (value) {
+          return value.business.storeplType.toLowerCase().includes(self.searchBrand.toLowerCase())
+        })
+        break;
+        case isSearchDeal:
+        return this.result.filter(function (value) {
+          return value.business.storedeals[0].dlsName.toLowerCase().includes(self.searchBrand.toLowerCase())
+        })
+        break;
+        case isSearchProd:
+        return this.result.filter(function (value) {
+          return value.business.storedeals[0].dlsApplyTo.toLowerCase().includes(self.searchBrand.toLowerCase())
+        })
+        break;
+      }
     }
-
-  },
+  }
 });
 
 var map_container = new Vue({
