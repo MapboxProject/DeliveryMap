@@ -167,7 +167,7 @@ Vue.component('map-brands-filter', {
                       <a v-for="value in filteredList" class="cities" v-on:click="filterOnMap(value.business.storeLatitude, value.business.storeLongitude)">\
                         <div class="row">\
                           <div class="col-sm-6">\
-                            <img src={{store.storebizLogo}}>\
+                            <img src={{value.storebizLogo}}>\
                           </div>\
                           <div class="col-sm-6">\
                             <div class="row">\
@@ -199,7 +199,15 @@ Vue.component('map-brands-filter', {
         center: [long, lat],
         essential: true
   });
-}
+},
+  hasDeals(element) {
+    if (element.business.storedeals.length > 0) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
 
   },
   computed: {
@@ -207,8 +215,8 @@ Vue.component('map-brands-filter', {
       var self = this;
       var isSearchStore = this.result.some(el => el.business.storeName.includes(self.searchBrand));
       var isSearchService = this.result.some((el) => el.business.storeplType.includes(self.searchBrand));
-      var isSearchDeal = this.result.some((el) => el.business.storedeals[0].dlsName.includes(self.searchBrand));
-      var isSearchProd = this.result.some((el) => el.business.storedeals[0].dlsApplyTo.includes(self.searchBrand));
+      var isSearchDeal = this.result.some((el) => this.hasDeals(el) ? el.business.storedeals[0].dlsName.includes(self.searchBrand) : false);
+      var isSearchProd = this.result.some((el) => this.hasDeals(el) ? el.business.storedeals[0].dlsApplyTo.includes(self.searchBrand) : false);
       switch (true) {
         case isSearchStore:
           return this.result.filter(function (value) {
