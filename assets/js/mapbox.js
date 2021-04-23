@@ -165,7 +165,22 @@ Vue.component('map-brands-filter', {
                 <div class="dropdown-container p-4 dropdown-menu">\
                   <div class="search-content">\
                       <a v-for="value in filteredList" class="cities" v-on:click="filterOnMap(value.business.storeLatitude, value.business.storeLongitude)">\
-                        <p>{{value.business.storeName}}</p>\
+                        <div class="row">\
+                          <div class="col-sm-6">\
+                            <img src={{store.storebizLogo}}>\
+                          </div>\
+                          <div class="col-sm-6">\
+                            <div class="row">\
+                              <div class="col-md-12">\
+                                <strong>{{value.business.storeName}}</strong>\
+                              </div>\
+                              <div class="col-md-12">\
+                                <small>{{value.business.storeplType}}</small>\
+                              </div>\
+                            </div>\
+                            <br>\
+                          </div>\
+                        </div>\
                       </a>\
               </div>\
             </div>',
@@ -216,7 +231,7 @@ Vue.component('map-brands-filter', {
         })
         break;
       }
-    }
+    },
   }
 });
 
