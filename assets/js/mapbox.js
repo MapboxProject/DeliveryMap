@@ -26,8 +26,11 @@ function closePanel() {
 }
 
 function buildDealList(data) {
+  console.log(data);
+  $('#listings').empty();
   var listings = document.getElementById('listings');
   var listing = listings.appendChild(document.createElement('div'));
+
   var today = new Date().getTime();
   data.forEach(function(store, i){
     if (store.business.storedeals.length > 0
@@ -75,7 +78,6 @@ function buildDealList(data) {
 
   });
 }
-
 var stores = data;
 
 Vue.component('map-location-filter', {
@@ -195,18 +197,18 @@ Vue.component('map-brands-filter', {
   },
   methods: {
     filterOnMap(lat, long) {
+      buildDealList(this.filteredList);
       map.flyTo({
         center: [long, lat],
         essential: true
   });
 },
+
   hasDeals(element) {
     if (element.business.storedeals.length > 0) {
-      return true
+    return true
     }
-    else {
-      return false
-    }
+    return false
   }
 
   },

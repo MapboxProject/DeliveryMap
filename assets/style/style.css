@@ -51,6 +51,13 @@
     color: #ff7546;
     cursor: pointer;
 }
+
+.cities:hover strong{
+    text-decoration: none;
+    color: #ff7546;
+    cursor: pointer;
+}
+
 .cities p{
     color: #000;
     text-decoration: none;
