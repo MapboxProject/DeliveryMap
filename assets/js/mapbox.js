@@ -26,8 +26,11 @@ function closePanel() {
 }
 
 function buildDealList(data) {
+  console.log(data);
+  $('#listings').empty();
   var listings = document.getElementById('listings');
   var listing = listings.appendChild(document.createElement('div'));
+
   var today = new Date().getTime();
   data.forEach(function(store, i){
     if (store.business.storedeals.length > 0
@@ -35,7 +38,7 @@ function buildDealList(data) {
       && store.business.storedeals[0].media) {
       //Create anchor to see deal
       var link = listing.appendChild(document.createElement('a'));
-      link.href = store.storebizRoute;
+      link.href = '';
       link.style = "color: black";
       // Create div with deal content
       var dealColumn = link.appendChild(document.createElement('div'));
@@ -75,22 +78,9 @@ function buildDealList(data) {
 
   });
 }
-
 var stores = data;
-var map_container = new Vue({
-  el: '#vue-filter',
-  data: {
-    stores: stores
-  },
-  template: '<div class="container-lg text-center" style="height: 5em">\
-            <map-filter :atts="atts"/>\
-            </div>',
-  created: function() {
-    this.atts = stores;
-  }
-})
 
-Vue.component('map-filter', {
+Vue.component('map-location-filter', {
   template: '<div class="dropdown">\
               <button type="button" class="btn dropdown-toggle rounded-pill bg-white" id="cityFilterToggle" data-toggle="dropdown">\
                 <i class="las la-map-marker"></i>\
@@ -112,7 +102,7 @@ Vue.component('map-filter', {
                 <section>\
                   <div class="">\
                     <nav class="popular">\
-                      <input value="Popular Areas" type="button" class="popular" v-on:click="debugTest">\
+                      <input value="Popular Areas" type="button" class="popular">\
                       <input value="A-Z" type="button" class="alphabetical">\
                       <input value="Near By" type="button" class="nearBy pt-3 pt-lg1 pt-md1">\
                     </nav>\
@@ -149,9 +139,6 @@ Vue.component('map-filter', {
     }
   },
   methods: {
-    debugTest: function (event) {
-      console.log(this.result);
-    },
     inputChanged(event) {
       if (event.code == "ArrowUp" || event.code == "ArrowDown")
         return;
@@ -171,13 +158,115 @@ Vue.component('map-filter', {
 
     }
 });
-new Vue({ el: '#vue-filter' })
+
+Vue.component('map-brands-filter', {
+  template: '<div class="order-1 order-lg-2 col-12 col-lg-7 mt-2 mt-lg-0 px-0">\
+                <div data-toggle="dropdown">\
+                  <input type="text" v-model="searchBrand" class="form-control bg-light" placeholder="Search Brands, Products, Services and more."/>\
+                </div>\
+                <div class="dropdown-container p-4 dropdown-menu">\
+                  <div class="search-content">\
+                      <a v-for="value in filteredList" class="cities" v-on:click="filterOnMap(value.business.storeLatitude, value.business.storeLongitude)">\
+                        <div class="row">\
+                          <div class="col-sm-6">\
+                            <div class="row">\
+                              <div class="col-md-12">\
+                                <strong>{{value.business.storeName}}</strong>\
+                              </div>\
+                              <div class="col-md-12">\
+                                <small>{{value.business.storeplType}}</small>\
+                              </div>\
+                            </div>\
+                            <br>\
+                          </div>\
+                        </div>\
+                      </a>\
+              </div>\
+            </div>',
+  data: function () {
+    return {
+      result: [],
+      searchBrand: ''
+    }
+  },
+  created: function() {
+    this.result = stores;
+  },
+  methods: {
+    filterOnMap(lat, long) {
+      buildDealList(this.filteredList);
+      map.flyTo({
+        center: [long, lat],
+        essential: true
+  });
+},
+
+  hasDeals(element) {
+    if (element.business.storedeals.length > 0) {
+    return true
+    }
+    return false
+  }
+
+  },
+  computed: {
+    filteredList: function() {
+      var self = this;
+      var isSearchStore = this.result.some(el => el.business.storeName.includes(self.searchBrand));
+      var isSearchService = this.result.some((el) => el.business.storeplType.includes(self.searchBrand));
+      var isSearchDeal = this.result.some((el) => this.hasDeals(el) ? el.business.storedeals[0].dlsName.includes(self.searchBrand) : false);
+      var isSearchProd = this.result.some((el) => this.hasDeals(el) ? el.business.storedeals[0].dlsApplyTo.includes(self.searchBrand) : false);
+      switch (true) {
+        case isSearchStore:
+          return this.result.filter(function (value) {
+            return value.business.storeName.toLowerCase().includes(self.searchBrand.toLowerCase())
+          })
+          break;
+        case isSearchService:
+        return this.result.filter(function (value) {
+          return value.business.storeplType.toLowerCase().includes(self.searchBrand.toLowerCase())
+        })
+        break;
+        case isSearchDeal:
+        return this.result.filter(function (value) {
+          return value.business.storedeals[0].dlsName.toLowerCase().includes(self.searchBrand.toLowerCase())
+        })
+        break;
+        case isSearchProd:
+        return this.result.filter(function (value) {
+          return value.business.storedeals[0].dlsApplyTo.toLowerCase().includes(self.searchBrand.toLowerCase())
+        })
+        break;
+      }
+    },
+  }
+});
+
+var map_container = new Vue({
+  el: '#vue-filter',
+  data: {
+    stores: stores
+  },
+  template: '<div class="order-2 text-center w-100 row mx-0" style="height: 5em">\
+              <div class="order-1 order-lg-2 col-12 col-lg-7 mt-2 mt-lg-0 px-0">\
+                <map-brands-filter :atts="atts"/>\
+              </div>\
+              <div class="order-2 order-lg-1 mt-3 mt-lg-0 px-0 col-lg-4">\
+                <map-location-filter :atts="atts"/>\
+              </div>\
+            </div>',
+  created: function() {
+    this.atts = stores;
+  }
+})
 
 
 map.on('load', function() {
 console.log(stores);
  stores.forEach(function(store, i) {
-   new mapboxgl.Marker()
+   var el = document.createElement('div');
+   el.className = 'marker';
+   new mapboxgl.Marker(el)
    .setLngLat([store.business.storeLongitude,store.business.storeLatitude])
    .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
     .setHTML(
