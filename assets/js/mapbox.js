@@ -344,18 +344,34 @@ var map_container = new Vue({
   }
 })
 
+function get_marker_type(store) {
+var isStoreFeatured = (store.business.storeIsFeatured == 1);
+var isStoreVerified = (store.business.storeIsVerified == 1);
+
+
+  switch (true) {
+    case isStoreVerified:
+    return 'marker-orange';
+    break;
+    case isStoreFeatured:
+      return 'marker-yellow'
+      break;
+    default:
+      return 'marker-blue';
+
+  }
+}
 
 map.on('load', function() {
 console.log(stores);
  stores.forEach(function(store, i) {
-   var el = document.createElement('div');
-   el.className = 'marker';
-   new mapboxgl.Marker(el)
-   .setLngLat([store.business.storeLongitude,store.business.storeLatitude])
-   .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-    .setHTML(
-      '<div class="limbet-square">' +
-        '<img src="https://dz8osaahf9pd7.cloudfront.net/images/assets/featuredribbon.png" alt="View More Details" style="position:absolute; transform: translate(-20%,-13%);">' +
+     var el = document.createElement('div');
+     el.className = get_marker_type(store);
+     new mapboxgl.Marker(el)
+     .setLngLat([store.business.storeLongitude,store.business.storeLatitude])
+     .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+     .setHTML(
+       '<div class="limbet-square">' +
         '<div class="limbet-img">' +
           '<img src=' + store.storebizLogo + '>' +
         '</div>' +
@@ -363,19 +379,18 @@ console.log(stores);
           '<strong>' + store.business.storeName + '</strong>' +
           '<div class="small">' +
             '<strong>' + store.storebizLocation + '</strong>' +
-            '<br>' +
+          '<br>' +
             '<div>' +
               '<span class="las la-star"></span>' + store.business.storervwAverage +
             '</div>' +
           '</div>' +
         '</div>' +
-     '</div>'
-   ))
-   .addTo(map);
+       '</div>'
+     ))
+     .addTo(map);
  });
 
  buildDealList(stores);
  buildStoreList(stores);
- // get_regions(stores);
 
 });
