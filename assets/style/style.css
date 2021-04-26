@@ -1,10 +1,46 @@
-.marker {
+.marker-yellow {
+  border: none;
+  cursor: pointer;
+  height: 2.7em;
+  width: 3em;
+  background-image: url('../img/marker-yellow-small.png');
+}
+.marker-yellow:hover {
   border: none;
   cursor: pointer;
   height: 5.3em;
   width: 5em;
-  background-image: url('../img/cannabis.png');
+  background-image: url('../img/marker-yellow-big.png');
 }
+.marker-blue {
+  border: none;
+  cursor: pointer;
+  height: 2.7em;
+  width: 3em;
+  background-image: url('../img/marker-blue-small.png');
+}
+.marker-blue:hover {
+  border: none;
+  cursor: pointer;
+  height: 5.3em;
+  width: 5em;
+  background-image: url('../img/marker-blue-big.png');
+}
+.marker-orange {
+  border: none;
+  cursor: pointer;
+  height: 2.7em;
+  width: 3em;
+  background-image: url('../img/marker-orange-small.png');
+}
+.marker-orange:hover {
+  border: none;
+  cursor: pointer;
+  height: 5.3em;
+  width: 5em;
+  background-image: url('../img/marker-orange-big.png');
+}
+
 
 .store-listing {
   border-bottom: 0.0625rem solid rgb(230, 229, 229);
