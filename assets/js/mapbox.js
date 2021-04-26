@@ -30,14 +30,24 @@ function buildDealList(data) {
   $('#dealList').empty();
   var listings = document.getElementById('dealList');
   var listing = listings.appendChild(document.createElement('div'));
-
+  listing.className = 'carousel-inner';
+  var counter = 0;
   var today = new Date().getTime();
   data.forEach(function(store, i){
     if (store.business.storedeals.length > 0
       && Date.parse(store.business.storedeals[0].dlsExpireDate) > today
       && store.business.storedeals[0].media) {
+
+      counter = counter + 1;
+
+      var carousel = listing.appendChild(document.createElement('div'));
+      carousel.className = "carousel-item";
+
+      if (counter == 1) {
+        carousel.className = "carousel-item active"
+      }
       //Create anchor to see deal
-      var link = listing.appendChild(document.createElement('a'));
+      var link = carousel.appendChild(document.createElement('a'));
       link.href = '';
       link.style = "color: black";
       // Create div with deal content
@@ -78,6 +88,8 @@ function buildDealList(data) {
 
   });
 }
+
+
 
 function buildStoreList(data) {
   console.log(data);
