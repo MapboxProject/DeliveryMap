@@ -57,7 +57,7 @@
     cursor: pointer;
 }
 
-.cities:hover sma{
+.cities:hover strong{
     text-decoration: none;
     color: #ff7546;
     cursor: pointer;
