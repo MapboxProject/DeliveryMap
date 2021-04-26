@@ -169,9 +169,6 @@ Vue.component('map-brands-filter', {
                       <a v-for="value in filteredList" class="cities" v-on:click="filterOnMap(value.business.storeLatitude, value.business.storeLongitude)">\
                         <div class="row">\
                           <div class="col-sm-6">\
-                            <img src={{value.storebizLogo}}>\
-                          </div>\
-                          <div class="col-sm-6">\
                             <div class="row">\
                               <div class="col-md-12">\
                                 <strong>{{value.business.storeName}}</strong>\
