@@ -63,6 +63,10 @@
     cursor: pointer;
 }
 
+.view-menu {
+  width: 100%;
+}
+
 .cities p{
     color: #000;
     text-decoration: none;

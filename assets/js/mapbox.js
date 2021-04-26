@@ -89,8 +89,6 @@ function buildDealList(data) {
   });
 }
 
-
-
 function buildStoreList(data) {
   console.log(data);
   $('#storeList').empty();
@@ -148,6 +146,16 @@ function buildStoreList(data) {
 
       var storeLocation = storeParagraph.appendChild(document.createElement('p'));
       storeLocation.innerHTML = store.storebizLocation + '</br>';
+
+      var storeButton = storeColumn.appendChild(document.createElement('div'));
+      storeButton.className = 'col-md-12 pb-3';
+
+      var storeViewMenu = storeButton.appendChild(document.createElement('a'));
+      storeViewMenu.href = '';
+      storeViewMenu.className = 'btn btn-outline-primary view-menu';
+      storeViewMenu.innerHTML = 'View Menu';
+
+
 
   });
 }
