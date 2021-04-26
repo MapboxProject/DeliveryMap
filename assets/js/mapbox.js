@@ -27,8 +27,8 @@ function closePanel() {
 
 function buildDealList(data) {
   console.log(data);
-  $('#listings').empty();
-  var listings = document.getElementById('listings');
+  $('#dealList').empty();
+  var listings = document.getElementById('dealList');
   var listing = listings.appendChild(document.createElement('div'));
 
   var today = new Date().getTime();
@@ -78,6 +78,69 @@ function buildDealList(data) {
 
   });
 }
+
+function buildStoreList(data) {
+  console.log(data);
+  $('#storeList').empty();
+  var listings = document.getElementById('storeList');
+
+  data.forEach(function(store, i){
+
+      var listing = listings.appendChild(document.createElement('div'));
+      listing.className = 'store-listing'
+      //Create anchor to see deal
+      var link = listing.appendChild(document.createElement('a'));
+      link.href = '';
+      link.style = "color: black";
+      // Create div with deal content
+      var storeColumn = link.appendChild(document.createElement('div'));
+      storeColumn.className = 'row';
+      storeColumn.style = "line-height: 0";
+
+      // Create Div with store images
+      var storeImage = storeColumn.appendChild(document.createElement('div'));
+      storeImage.className = 'col-md-6';
+
+      // Create image tag
+      var productImage = storeImage.appendChild(document.createElement('img'));
+      productImage.src = store.storebizLogo;
+      productImage.className = 'img-fluid';
+      productImage.style = 'max-widht: 10em';
+
+      // Create Div with store informations
+      var storeInformation = storeColumn.appendChild(document.createElement('div'));
+      storeInformation.className = 'row col-md-6';
+
+      var storeTittle = storeInformation.appendChild(document.createElement('div'));
+      storeTittle.className = 'col-md-12 pb-3';
+
+      var storeName = storeTittle.appendChild(document.createElement('h4'));
+      storeName.className = 'bold pb-2';
+      storeName.innerHTML = store.business.storeName;
+
+      var storeStars = storeInformation.appendChild(document.createElement('div'));
+      storeStars.className = 'col-md-12 pb-3';
+
+      var storeRating = storeStars.appendChild(document.createElement('span'));
+      storeRating.className = 'las la-star';
+      storeRating.innerHTML = store.business.storervwAverage + ' ' + '(' + store.business.storervwCount + ')';
+
+      var storeSubtittle = storeInformation.appendChild(document.createElement('div'));
+      storeSubtittle.className = 'col-md-12 pb-3';
+
+      var storeType = storeSubtittle.appendChild(document.createElement('p'));
+      storeType.innerHTML = store.business.storeplType;
+
+      var storeParagraph = storeInformation.appendChild(document.createElement('div'));
+      storeParagraph.className = 'col-md-12 pb-3';
+
+      var storeLocation = storeParagraph.appendChild(document.createElement('p'));
+      storeLocation.innerHTML = store.storebizLocation + '</br>';
+
+  });
+}
+
+
 var stores = data;
 
 Vue.component('map-location-filter', {
@@ -195,6 +258,7 @@ Vue.component('map-brands-filter', {
   methods: {
     filterOnMap(lat, long) {
       buildDealList(this.filteredList);
+      buildStoreList(this.filteredList)
       map.flyTo({
         center: [long, lat],
         essential: true
@@ -291,6 +355,7 @@ console.log(stores);
  });
 
  buildDealList(stores);
+ buildStoreList(stores);
  // get_regions(stores);
 
 });
