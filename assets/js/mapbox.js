@@ -364,30 +364,42 @@ var isStoreVerified = (store.business.storeIsVerified == 1);
 
 map.on('load', function() {
 console.log(stores);
+
+// Getting all stores from JSON
  stores.forEach(function(store, i) {
+
+   // Creating popup
+   var popup = new mapboxgl.Popup()
+   .setHTML(
+     '<div class="limbet-square">' +
+      '<div class="limbet-img">' +
+        '<img src=' + store.storebizLogo + '>' +
+      '</div>' +
+      '<div class="limbet-header">' +
+        '<strong>' + store.business.storeName + '</strong>' +
+        '<div class="small">' +
+          '<strong>' + store.storebizLocation + '</strong>' +
+        '<br>' +
+        '</div>' +
+      '</div>' +
+     '</div>'
+   );
+
+   // Creating Marker
      var el = document.createElement('div');
      el.className = get_marker_type(store);
-     new mapboxgl.Marker(el)
+     const marker = new mapboxgl.Marker(el)
      .setLngLat([store.business.storeLongitude,store.business.storeLatitude])
-     .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-     .setHTML(
-       '<div class="limbet-square">' +
-        '<div class="limbet-img">' +
-          '<img src=' + store.storebizLogo + '>' +
-        '</div>' +
-        '<div class="limbet-header">' +
-          '<strong>' + store.business.storeName + '</strong>' +
-          '<div class="small">' +
-            '<strong>' + store.storebizLocation + '</strong>' +
-          '<br>' +
-            '<div>' +
-              '<span class="las la-star"></span>' + store.business.storervwAverage +
-            '</div>' +
-          '</div>' +
-        '</div>' +
-       '</div>'
-     ))
-     .addTo(map);
+
+  // Creating hover effect for popup
+     const markerDiv = marker.getElement();
+     markerDiv.addEventListener('mouseenter', () => popup.addTo(map));
+     markerDiv.addEventListener('mouseleave', () => popup.remove());
+
+  // Adding popup to marker, and marker to map
+     marker.setPopup(popup);
+     marker.addTo(map);
+
  });
 
  buildDealList(stores);
