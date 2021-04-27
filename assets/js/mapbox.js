@@ -351,13 +351,13 @@ var isStoreVerified = (store.business.storeIsVerified == 1);
 
   switch (true) {
     case isStoreVerified:
-    return 'marker-orange';
+    return 'marker-green';
     break;
     case isStoreFeatured:
-      return 'marker-yellow'
+      return 'marker-orange'
       break;
     default:
-      return 'marker-blue';
+      return 'marker-red';
 
   }
 }

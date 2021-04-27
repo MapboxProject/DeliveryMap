@@ -1,43 +1,43 @@
-.marker-yellow {
+.marker-red {
   border: none;
   cursor: pointer;
-  height: 2.7em;
-  width: 3em;
-  background-image: url('../img/marker-yellow-small.png');
+  height: 4.25em;
+  width: 3.2em;
+  background-image: url('../img/marker-red-small.png');
 }
-.marker-yellow:hover {
+.marker-red:hover {
   border: none;
   cursor: pointer;
-  height: 5.3em;
-  width: 5em;
-  background-image: url('../img/marker-yellow-big.png');
+  height: 8.5em;
+  width: 6.5em;
+  background-image: url('../img/marker-red-big.png');
 }
-.marker-blue {
+.marker-green {
   border: none;
   cursor: pointer;
-  height: 2.7em;
-  width: 3em;
-  background-image: url('../img/marker-blue-small.png');
+  height: 4.4em;
+  width: 3.35em;
+  background-image: url('../img/marker-green-small.png');
 }
-.marker-blue:hover {
+.marker-green:hover {
   border: none;
   cursor: pointer;
-  height: 5.3em;
-  width: 5em;
-  background-image: url('../img/marker-blue-big.png');
+  height: 8.9em;
+  width: 6.7em;
+  background-image: url('../img/marker-green-big.png');
 }
 .marker-orange {
   border: none;
   cursor: pointer;
-  height: 2.7em;
-  width: 3em;
+  height: 4.4em;
+  width: 3.35em;
   background-image: url('../img/marker-orange-small.png');
 }
 .marker-orange:hover {
   border: none;
   cursor: pointer;
-  height: 5.3em;
-  width: 5em;
+  height: 8.8em;
+  width: 6.7em;
   background-image: url('../img/marker-orange-big.png');
 }
 
