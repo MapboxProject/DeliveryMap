@@ -41,6 +41,13 @@
   background-image: url('../img/marker-orange-big.png');
 }
 
+.btn-toggle-panel {
+    background-color: #4d9023;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 14px;
+    text-transform: uppercase;
+}
 
 .store-listing {
   border-bottom: 0.0625rem solid rgb(230, 229, 229);
@@ -179,7 +186,7 @@ nav input {
   color:#fff;
   cursor:pointer;
   padding:18px;
-  width:110%;
+  width:40%;
   border:none;
   outline:none;
   font-size:15px;
@@ -187,7 +194,24 @@ nav input {
   bottom:0;
   left:0;
   z-index:6;
-  text-align:center}
+  text-align:center
+}
+.mobile-store-btn {
+  opacity:.7;
+  background-color:gray;
+  color:#fff;
+  cursor:pointer;
+  padding:18px;
+  width:40%;
+  border:none;
+  outline:none;
+  font-size:15px;
+  position:fixed;
+  bottom:0;
+  right:0;
+  z-index:6;
+  text-align:center
+}
 
 .deal-panel {
   position:absolute;
