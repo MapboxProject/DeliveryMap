@@ -27,17 +27,27 @@ function closePanel() {
 
 function buildDealList(data) {
   console.log(data);
-  $('#listings').empty();
-  var listings = document.getElementById('listings');
+  $('#dealList').empty();
+  var listings = document.getElementById('dealList');
   var listing = listings.appendChild(document.createElement('div'));
-
+  listing.className = 'carousel-inner';
+  var counter = 0;
   var today = new Date().getTime();
   data.forEach(function(store, i){
     if (store.business.storedeals.length > 0
       && Date.parse(store.business.storedeals[0].dlsExpireDate) > today
       && store.business.storedeals[0].media) {
+
+      counter = counter + 1;
+
+      var carousel = listing.appendChild(document.createElement('div'));
+      carousel.className = "carousel-item";
+
+      if (counter == 1) {
+        carousel.className = "carousel-item active"
+      }
       //Create anchor to see deal
-      var link = listing.appendChild(document.createElement('a'));
+      var link = carousel.appendChild(document.createElement('a'));
       link.href = '';
       link.style = "color: black";
       // Create div with deal content
@@ -78,6 +88,79 @@ function buildDealList(data) {
 
   });
 }
+
+function buildStoreList(data) {
+  console.log(data);
+  $('#storeList').empty();
+  var listings = document.getElementById('storeList');
+
+  data.forEach(function(store, i){
+
+      var listing = listings.appendChild(document.createElement('div'));
+      listing.className = 'store-listing'
+      //Create anchor to see deal
+      var link = listing.appendChild(document.createElement('a'));
+      link.href = '';
+      link.style = "color: black";
+      // Create div with deal content
+      var storeColumn = link.appendChild(document.createElement('div'));
+      storeColumn.className = 'row';
+      storeColumn.style = "line-height: 0";
+
+      // Create Div with store images
+      var storeImage = storeColumn.appendChild(document.createElement('div'));
+      storeImage.className = 'col-md-6';
+
+      // Create image tag
+      var productImage = storeImage.appendChild(document.createElement('img'));
+      productImage.src = store.storebizLogo;
+      productImage.className = 'img-fluid';
+      productImage.style = 'max-widht: 10em';
+
+      // Create Div with store informations
+      var storeInformation = storeColumn.appendChild(document.createElement('div'));
+      storeInformation.className = 'row col-md-6';
+
+      var storeTittle = storeInformation.appendChild(document.createElement('div'));
+      storeTittle.className = 'col-md-12 pb-3';
+
+      var storeName = storeTittle.appendChild(document.createElement('h4'));
+      storeName.className = 'bold pb-2';
+      storeName.innerHTML = store.business.storeName;
+
+      var storeStars = storeInformation.appendChild(document.createElement('div'));
+      storeStars.className = 'col-md-12 pb-3';
+
+      var storeRating = storeStars.appendChild(document.createElement('span'));
+      storeRating.className = 'las la-star';
+      storeRating.innerHTML = store.business.storervwAverage + ' ' + '(' + store.business.storervwCount + ')';
+
+      var storeSubtittle = storeInformation.appendChild(document.createElement('div'));
+      storeSubtittle.className = 'col-md-12 pb-3';
+
+      var storeType = storeSubtittle.appendChild(document.createElement('p'));
+      storeType.innerHTML = store.business.storeplType;
+
+      var storeParagraph = storeInformation.appendChild(document.createElement('div'));
+      storeParagraph.className = 'col-md-12 pb-3';
+
+      var storeLocation = storeParagraph.appendChild(document.createElement('p'));
+      storeLocation.innerHTML = store.storebizLocation + '</br>';
+
+      var storeButton = storeColumn.appendChild(document.createElement('div'));
+      storeButton.className = 'col-md-12 pb-3';
+
+      var storeViewMenu = storeButton.appendChild(document.createElement('a'));
+      storeViewMenu.href = '';
+      storeViewMenu.className = 'btn btn-outline-primary view-menu';
+      storeViewMenu.innerHTML = 'View Menu';
+
+
+
+  });
+}
+
+
 var stores = data;
 
 Vue.component('map-location-filter', {
@@ -195,6 +278,7 @@ Vue.component('map-brands-filter', {
   methods: {
     filterOnMap(lat, long) {
       buildDealList(this.filteredList);
+      buildStoreList(this.filteredList)
       map.flyTo({
         center: [long, lat],
         essential: true
@@ -260,18 +344,34 @@ var map_container = new Vue({
   }
 })
 
+function get_marker_type(store) {
+var isStoreFeatured = (store.business.storeIsFeatured == 1);
+var isStoreVerified = (store.business.storeIsVerified == 1);
+
+
+  switch (true) {
+    case isStoreVerified:
+    return 'marker-green';
+    break;
+    case isStoreFeatured:
+      return 'marker-orange'
+      break;
+    default:
+      return 'marker-red';
+
+  }
+}
 
 map.on('load', function() {
 console.log(stores);
  stores.forEach(function(store, i) {
-   var el = document.createElement('div');
-   el.className = 'marker';
-   new mapboxgl.Marker(el)
-   .setLngLat([store.business.storeLongitude,store.business.storeLatitude])
-   .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-    .setHTML(
-      '<div class="limbet-square">' +
-        '<img src="https://dz8osaahf9pd7.cloudfront.net/images/assets/featuredribbon.png" alt="View More Details" style="position:absolute; transform: translate(-20%,-13%);">' +
+     var el = document.createElement('div');
+     el.className = get_marker_type(store);
+     new mapboxgl.Marker(el)
+     .setLngLat([store.business.storeLongitude,store.business.storeLatitude])
+     .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+     .setHTML(
+       '<div class="limbet-square">' +
         '<div class="limbet-img">' +
           '<img src=' + store.storebizLogo + '>' +
         '</div>' +
@@ -279,18 +379,18 @@ console.log(stores);
           '<strong>' + store.business.storeName + '</strong>' +
           '<div class="small">' +
             '<strong>' + store.storebizLocation + '</strong>' +
-            '<br>' +
+          '<br>' +
             '<div>' +
               '<span class="las la-star"></span>' + store.business.storervwAverage +
             '</div>' +
           '</div>' +
         '</div>' +
-     '</div>'
-   ))
-   .addTo(map);
+       '</div>'
+     ))
+     .addTo(map);
  });
 
  buildDealList(stores);
- // get_regions(stores);
+ buildStoreList(stores);
 
 });

@@ -1,23 +1,50 @@
-.marker {
+.marker-red {
   border: none;
   cursor: pointer;
-  height: 5.3em;
-  width: 5em;
-  background-image: url('../img/cannabis.png');
+  height: 4.25em;
+  width: 3.2em;
+  background-image: url('../img/marker-red-small.png');
 }
-.markerPoor {
+.marker-red:hover {
   border: none;
   cursor: pointer;
-  height: 5.3em;
-  width: 5em;
-  background-image: url('../img/location.png');
+  height: 8.5em;
+  width: 6.5em;
+  background-image: url('../img/marker-red-big.png');
 }
-.markerTeste {
+.marker-green {
   border: none;
   cursor: pointer;
-  height: 5.3em;
-  width: 5em;
-  background-image: url('../img/location.png');
+  height: 4.4em;
+  width: 3.35em;
+  background-image: url('../img/marker-green-small.png');
+}
+.marker-green:hover {
+  border: none;
+  cursor: pointer;
+  height: 8.9em;
+  width: 6.7em;
+  background-image: url('../img/marker-green-big.png');
+}
+.marker-orange {
+  border: none;
+  cursor: pointer;
+  height: 4.4em;
+  width: 3.35em;
+  background-image: url('../img/marker-orange-small.png');
+}
+.marker-orange:hover {
+  border: none;
+  cursor: pointer;
+  height: 8.8em;
+  width: 6.7em;
+  background-image: url('../img/marker-orange-big.png');
+}
+
+
+.store-listing {
+  border-bottom: 0.0625rem solid rgb(230, 229, 229);
+  padding: 2em;
 }
 
 .limbet-square {
@@ -70,6 +97,10 @@
     text-decoration: none;
     color: #ff7546;
     cursor: pointer;
+}
+
+.view-menu {
+  width: 100%;
 }
 
 .cities p{
@@ -169,7 +200,21 @@ nav input {
   overflow:auto;
   overflow-x:hidden;
   max-height:25em;
-  background-color:#fff}
+  background-color:#fff
+}
+.store-panel {
+  position:absolute;
+  right: 2em;
+  bottom:18px;
+  width:100%;
+  padding:0 18px 25px;
+  display:none;
+  z-index:5;
+  overflow:auto;
+  overflow-x:hidden;
+  max-height:25em;
+  background-color:#fff
+}
 
 .search-here-btn {
   cursor:pointer;
@@ -184,7 +229,7 @@ nav input {
 
 @media only screen and (min-width:681px) {
 
-  .deal-panel{
+  .deal-panel {
     font-family:Arial,Helvetica,sans-serif;
     position:absolute;
     top:65%;
@@ -200,7 +245,23 @@ nav input {
     .stick-div{position:sticky;
     top:0;
     z-index:6;
-    background-color:#fff}
+    background-color:#fff
+  }
+  .store-panel {
+    right: 2em;
+    font-family:Arial,Helvetica,sans-serif;
+    position:absolute;
+    top:65%;
+    margin-top:-17em;
+    max-height:30em;
+    margin-right:1em;
+    width:30em;
+    overflow:auto;
+    overflow-x:hidden;
+    z-index:5;
+    border:1px solid #999;
+    background:#fff
+  }
 
 .mobile-deal-btn{display:none}
 
@@ -238,6 +299,21 @@ nav input {
     max-height:30em;
     margin-left:2em;
     width:25em;
+    overflow:auto;
+    overflow-x:hidden;
+    z-index:5;
+    border:1px solid #999;
+    background:#fff
+    }
+  .store-panel {
+    right: 2em;
+    font-family:Arial,Helvetica,sans-serif;
+    position:absolute;
+    top:65%;
+    margin-top:-17em;
+    max-height:30em;
+    margin-right:2em;
+    width:30em;
     overflow:auto;
     overflow-x:hidden;
     z-index:5;
