@@ -369,7 +369,10 @@ console.log(stores);
  stores.forEach(function(store, i) {
 
    // Creating popup
-   var popup = new mapboxgl.Popup()
+   var popup = new mapboxgl.Popup({
+     closeButton: false,
+     cloneOnClick: false
+   })
    .setHTML(
      '<div class="limbet-square">' +
       '<div class="limbet-img">' +
