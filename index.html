@@ -28,8 +28,6 @@ type="text/css"
     </div>
   </div>
 <div id='map' class="map container-fluid">
-  <button type="button" onclick="openDealPanel()" id="show-btn" class="mobile-deal-btn">View Deals</button>
-  <button type="button" onclick="closePanel()" id="close-btn" class="mobile-deal-btn" style="display: none">View Deals</button>
   <div class='deal-panel' id="deal-panel">
     <div class='stick-div'>
       <div class="row">
@@ -49,9 +47,9 @@ type="text/css"
   </div>
 </div>
 
-<div class="button-group pt-3 pb-3 d-flex justify-content-around">
-  <button class="btn-toggle-panel" type="button" name="button">View Deals</button>
-  <button class="btn-toggle-panel" type="button" name="button">View Stores</button>
+<div class="d-none d-sm-flex d-md-none pt-3 pb-3 justify-content-around">
+  <button class="btn-toggle-panel" type="button" onclick="toggleDealPanel()" name="button">View Deals</button>
+  <button class="btn-toggle-panel" type="button" onclick="toggleStorePanel()" name="button">View Stores</button>
 </div>
 </body>
 

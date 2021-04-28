@@ -12,17 +12,22 @@ map.addControl(new mapboxgl.NavigationControl());
 
 var panel_element = document.getElementById('deal-panel');
 
-
-function openDealPanel() {
-  document.getElementById('deal-panel').style.display = "block";
-  document.getElementById('show-btn').style.display = "none";
-  document.getElementById('close-btn').style.display = "block";
+function toggleDealPanel() {
+  var panel = document.getElementById("deal-panel");
+  if (panel.style.display === "none") {
+    panel.style.display = "block";
+  } else {
+    panel.style.display = "none";
+  }
 }
 
-function closePanel() {
-  document.getElementById('deal-panel').style.display = "none";
-  document.getElementById('show-btn').style.display = "block";
-  document.getElementById('close-btn').style.display = "none";
+function toggleStorePanel() {
+  var panel = document.getElementById("store-panel");
+  if (panel.style.display === "none") {
+    panel.style.display = "block";
+  } else {
+    panel.style.display = "none";
+  }
 }
 
 function buildDealList(data) {
